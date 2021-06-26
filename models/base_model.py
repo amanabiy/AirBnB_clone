@@ -4,17 +4,30 @@ Module base_model
 Contains a Class that defines all common attributes or
 methods for other classes
 """
-import uuid
+from uuid import uuid4
 from datetime import datetime
 
 
 class BaseModel:
     """ a base class for other classes """
-    def __init__(self):
+    def __init__(self, *args, **kwargs):
         """ initializes the values """
-        self.id = str(uuid.uuid4())
-        self.created_at = datetime.now()
-        self.updated_at = datetime.now()
+        if kwargs:
+            for key, val in kwargs.items():
+                if "created_at" == key:
+                    self.created_at = datetime.strptime(kwargs["created_at"],
+                                                        "%Y-%m-%dT%H:%M:%S.%f")
+                elif "updated_at" == key:
+                    self.updated_at = datetime.strptime(kwargs["updated_at"],
+                                                        "%Y-%m-%dT%H:%M:%S.%f")
+                elif "__class__" == key:
+                    pass
+                else:
+                    setattr(self, key, val)
+        else:
+            self.id = str(uuid4())
+            self.created_at = datetime.now()
+            self.updated_at = datetime.now()
 
     def __str__(self):
         """ print in "[<class name>] (<self.id>) <self.__dict__>" format"""
