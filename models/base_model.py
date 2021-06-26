@@ -6,7 +6,7 @@ methods for other classes
 """
 from uuid import uuid4
 from datetime import datetime
-
+import models
 
 class BaseModel:
     """ a base class for other classes """
@@ -28,6 +28,7 @@ class BaseModel:
             self.id = str(uuid4())
             self.created_at = datetime.now()
             self.updated_at = datetime.now()
+            models.storage.new(self)
 
     def __str__(self):
         """ print in "[<class name>] (<self.id>) <self.__dict__>" format"""
@@ -42,6 +43,8 @@ class BaseModel:
         with the current datetime
         """
         self.updated_at = datetime.now()
+        models.storage.save()
+
     def to_dict(self):
         """
         returns a dictionary containing all keysvalues
