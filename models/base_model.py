@@ -6,20 +6,24 @@ methods for other classes
 """
 from uuid import uuid4
 from datetime import datetime
-import models
+from models import storage
+import json, sys, os.path
 
-class BaseModel:
+
+class BaseModel():
     """ a base class for other classes """
+    dtf = '%Y-%m-%dT%H:%M:%S.%f'
+
     def __init__(self, *args, **kwargs):
         """ initializes the values """
-        if kwargs:
+        if kwargs != {}:
             for key, val in kwargs.items():
                 if "created_at" == key:
                     self.created_at = datetime.strptime(kwargs["created_at"],
-                                                        "%Y-%m-%dT%H:%M:%S.%f")
+                                                        self.dtf)
                 elif "updated_at" == key:
                     self.updated_at = datetime.strptime(kwargs["updated_at"],
-                                                        "%Y-%m-%dT%H:%M:%S.%f")
+                                                        self.dtf)
                 elif "__class__" == key:
                     pass
                 else:
@@ -28,7 +32,7 @@ class BaseModel:
             self.id = str(uuid4())
             self.created_at = datetime.now()
             self.updated_at = datetime.now()
-            models.storage.new(self)
+            storage.new(self)
 
     def __str__(self):
         """ print in "[<class name>] (<self.id>) <self.__dict__>" format"""
@@ -43,15 +47,27 @@ class BaseModel:
         with the current datetime
         """
         self.updated_at = datetime.now()
-        models.storage.save()
+        storage.save()
 
     def to_dict(self):
         """
         returns a dictionary containing all keysvalues
         of __dict__ of the instance
+        """        
+        my_dict = dict(self.__dict__)
+        my_dict["__class__"] = type(self).__name__
+        my_dict["updated_at"] = my_dict["updated_at"].isoformat()
+        my_dict["created_at"] = my_dict["created_at"].isoformat()
+        return my_dict
+        
+    def to_json(self):
         """
-        my_dic = self.__dict__
-        my_dic["__class__"] = self.__class__.__name__
-        my_dic["updated_at"] = self.updated_at.isoformat()
-        my_dic["created_at"] = self.created_at.isoformat()
-        return my_dic
+        returns a json containing all keysvalues
+        of __dict__ of the instance
+        """        
+        my_json = self.__dict__.copy()
+        my_json.update({'created_at': self.created_at.strftime(self.dtf)})
+        my_json.update({'__class__': str(self.__class__.__name__)})
+        if hasattr(self, 'updated_at'):
+            my_json.update({'updated_at': self.updated_at.strftime(self.dtf)})
+        return my_json 
