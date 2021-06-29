@@ -32,13 +32,13 @@ class HBNBCommand(cmd.Cmd):
                 cnt += 1
         return cnt
 
-    def do_EOF(self, line):
+    def do_EOF(self, args):
         '''Quit command to exit the program'''
-        return True
+        raise SystemExit
 
-    def do_quit(self, line):
+    def do_quit(self, args):
         ''' Quit command to exit the program '''
-        return True
+        raise SystemExit
 
     def emptyline(self):
         ''' an empty line + ENTER shouldn’t execute anything '''
