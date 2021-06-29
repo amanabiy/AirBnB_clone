@@ -12,7 +12,7 @@ class TestUser(unittest.TestCase):
     def test_object_Instantiation(self):
         ''' instantiates class '''
         self.user = User()
-        
+
     def testattr(self):
         ''' test Class: User attributes '''
         self.user = User()
@@ -53,7 +53,7 @@ class TestUser(unittest.TestCase):
         ''' testing __str__ return format of User '''
         self.user = User()
         s = "[{}] ({}) {}".format(self.user.__class__.__name__,
-                                    str(self.user.id), self.user.__dict__)
+                                  str(self.user.id), self.user.__dict__)
         self.assertEqual(print(s), print(self.user))
 
 if __name__ == '__main__':
