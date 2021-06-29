@@ -24,10 +24,11 @@ class TestConsole(unittest.TestCase):
 
     def test_Quit(self):
         ''' tests quit method '''
-        
+
         cmd = HBNBCommand()
         self.assertRaises(SystemExit, quit)
 
     def test_docs(self):
         ''' tests docstrings '''
-        self.assertTrue(len(HBNBCommand.__doc__) > 0, "** There is No docstring Found ** ")       
+        self.assertTrue(len(HBNBCommand.__doc__) > 0,
+                        "** There is No docstring Found ** ")
