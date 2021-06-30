@@ -1,60 +1,66 @@
 #!/usr/bin/python3
+
 import unittest
+import os
+import pep8
 from models.user import User
-"""
-Unittest Module for User class
-"""
+from models.base_model import BaseModel
 
 
 class TestUser(unittest.TestCase):
-    ''' Unittest for User class '''
 
-    def test_object_Instantiation(self):
-        ''' instantiates class '''
-        self.user = User()
+    @classmethod
+    def setUpClass(cls):
+        cls.my_user = User()
+        cls.my_user.first_name = "Betty"
+        cls.my_user.last_name = "Holberton"
+        cls.my_user.email = "airbnb@holbertonshool.com"
+        cls.my_user.password = "root"
 
-    def testattr(self):
-        ''' test Class: User attributes '''
-        self.user = User()
-        self.assertTrue(hasattr(self.user, "created_at"))
-        self.assertTrue(hasattr(self.user, "updated_at"))
-        self.assertFalse(hasattr(self.user, "random_attr"))
-        self.assertFalse(hasattr(self.user, "name"))
-        self.assertTrue(hasattr(self.user, "id"))
-        self.user.name = "Alice"
-        self.user.age = "44"
-        self.assertTrue(hasattr(self.user, "name"))
-        self.assertTrue(hasattr(self.user, "age"))
-        delattr(self.user, "name")
-        self.assertFalse(hasattr(self.user, "name"))
-        delattr(self.user, "age")
-        self.assertFalse(hasattr(self.user, "age"))
-        self.assertEqual(self.user.email, "")
-        self.assertEqual(self.user.password, "")
-        self.assertEqual(self.user.first_name, "")
-        self.assertEqual(self.user.last_name, "")
-        self.assertEqual(self.user.__class__.__name__, "User")
-        self.user.first_name = "Alice"
-        self.user.last_name = "Bob"
-        self.user.email = "Alice@gmail.com"
-        self.user.password = "Al23ba4f$58"
-        self.assertEqual(self.user.email, "Alice@gmail.com")
-        self.assertEqual(self.user.password, "Al23ba4f$58")
-        self.assertEqual(self.user.first_name, "Alice")
-        self.assertEqual(self.user.last_name, "Bob")
+    @classmethod
+    def tearDownClass(cls):
+        del cls.my_user
+        try:
+            os.remove("file.json")
+        except FileNotFoundError:
+            pass
 
-    def testsave(self):
-        ''' testing method: save '''
-        self.user = User()
-        self.user.save()
-        self.assertTrue(hasattr(self.user, "updated_at"))
+    def test_style_check(self):
+        """
+        Tests pep8 style
+        """
+        style = pep8.StyleGuide(quiet=True)
+        p = style.check_files(['models/user.py'])
+        self.assertEqual(p.total_errors, 0, "fix pep8")
 
-    def teststr(self):
-        ''' testing __str__ return format of User '''
-        self.user = User()
-        s = "[{}] ({}) {}".format(self.user.__class__.__name__,
-                                  str(self.user.id), self.user.__dict__)
-        self.assertEqual(print(s), print(self.user))
+    def test_is_subclass(self):
+        self.assertTrue(issubclass(self.my_user.__class__, BaseModel), True)
 
-if __name__ == '__main__':
+    def test_checking_for_functions(self):
+        self.assertIsNotNone(User.__doc__)
+
+    def test_has_attributes(self):
+        self.assertTrue('email' in self.my_user.__dict__)
+        self.assertTrue('id' in self.my_user.__dict__)
+        self.assertTrue('created_at' in self.my_user.__dict__)
+        self.assertTrue('updated_at' in self.my_user.__dict__)
+        self.assertTrue('password' in self.my_user.__dict__)
+        self.assertTrue('first_name' in self.my_user.__dict__)
+        self.assertTrue('last_name' in self.my_user.__dict__)
+
+    def test_attributes_are_strings(self):
+        self.assertEqual(type(self.my_user.email), str)
+        self.assertEqual(type(self.my_user.password), str)
+        self.assertEqual(type(self.my_user.first_name), str)
+        self.assertEqual(type(self.my_user.first_name), str)
+
+    def test_save(self):
+        self.my_user.save()
+        self.assertNotEqual(self.my_user.created_at, self.my_user.updated_at)
+
+    def test_to_dict(self):
+        self.assertEqual('to_dict' in dir(self.my_user), True)
+
+
+if __name__ == "__main__":
     unittest.main()
