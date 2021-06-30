@@ -37,3 +37,5 @@ Do you remember the Shell? It’s exactly the same but limited to a specific use
 | `all`     | `User.all()`                                  | display all objects in class               |
 | `quit`    | `quit`                                        | exits                                      |
 
+#### How to install
+
