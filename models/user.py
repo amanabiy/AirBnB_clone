@@ -1,17 +1,15 @@
 #!/usr/bin/python3
+"""user class
+"""
+
 from models.base_model import BaseModel
-"""
-Module class: User
-"""
+import json
 
 
 class User(BaseModel):
-    """definition for class User"""
+    '''base model class'''
+
     email = ""
     password = ""
     first_name = ""
     last_name = ""
-
-    def __init__(self, *args, **kwargs):
-        """ constructor method """
-        super().__init__(self, *args, **kwargs)
