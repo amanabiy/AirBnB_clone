@@ -1,4 +1,7 @@
 #!/usr/bin/python3
+"""
+Module consule.py a cmd console
+"""
 import cmd
 import json
 import shlex
@@ -12,10 +15,6 @@ from models.review import Review
 from models import storage
 from models.engine.file_storage import FileStorage
 from datetime import datetime
-
-"""
-Module consule.py a cmd console
-"""
 
 
 class HBNBCommand(cmd.Cmd):
