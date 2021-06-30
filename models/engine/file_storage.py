@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 import os.path
 import json
+import os
 """
 Module file_storage
 Contains a class FileStorage
@@ -30,34 +31,39 @@ class FileStorage():
 
     def save(self):
         ''' serializes __objects to the JSON file (path: __file_path) '''
-        my_dic = {}
+        my_dict = {}
 
-        for keys, obje in self.__objects.items():
+        for keys, val in self.__objects.items():
             ''' serialize each object using the key '''
-            my_dic[keys] = obje.to_dict()
+            my_dict[keys] = val.to_dict()
 
         with open(self.__file_path, "w") as my_file:
-            json.dump(my_dic, my_file)
+            json.dump(my_dict, my_file)
 
     def reload(self):
-        ''' deserializes the JSON file to __objects '''
+        ''' deserializes/loads the JSON file to __objects '''
 
-        if os.path.exists(self.__file_path):
-
-            with open(self.__file_path, 'r') as f:
-                ''' open the file and dessiralize it '''
-                new_obj = json.load(f)
-
-            from models.base_model import BaseModel
-            from models.user import User
-            from models.place import Place
-            from models.state import State
-            from models.city import City
-            from models.amenity import Amenity
-            from models.review import Review
-            for key, value in new_obj.items():
-                ''' create each object and add it to the __objects '''
-                obj = BaseModel(**value)
-                self.__objects[key] = obj
-        else:
-            pass
+        from models.base_model import BaseModel
+        from models.user import User
+        from models.state import State
+        from models.city import City
+        from models.amenity import Amenity
+        from models.place import Place
+        from models.review import Review
+        my_dict = {
+            "BaseModel": BaseModel,
+            "User": User,
+            "State": State,
+            "City": City,
+            "Amenity": Amenity,
+            "Place": Place,
+            "Review": Review
+            }
+        if not os.path.isfile(self.__file_path):
+            return
+        with open(self.__file_path, "r") as file_path:
+            objects = json.load(file_path)
+            self.__objects = {}
+            for key in objects:
+                name = key.split(".")[0]
+                self.__objects[key] = my_dict[name](**objects[key])
