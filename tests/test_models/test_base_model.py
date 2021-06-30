@@ -12,6 +12,11 @@ class TestUser(unittest.TestCase):
     def test_object_Instantiation(self):
         ''' instantiates class '''
         self.basemodel = BaseModel()
+        
+    def test_checking_for_functions(self):
+        self.assertIsNotNone(BaseModel.__doc__)
+        self.assertIsNotNone(BaseModel.save.__doc__)
+        self.assertIsNotNone(BaseModel.to_dict.__doc__)
 
     def testattr(self):
         ''' test Class: User attributes '''
@@ -44,6 +49,12 @@ class TestUser(unittest.TestCase):
                                   str(self.basemodel.id),
                                   self.basemodel.__dict__)
         self.assertEqual(print(s), print(self.basemodel))
+        
+    def test_to_dict(self):
+        base1_dict = self.base1.to_dict()
+        self.assertEqual(self.base1.__class__.__name__, 'BaseModel')
+        self.assertIsInstance(base1_dict['created_at'], str)
+        self.assertIsInstance(base1_dict['updated_at'], str)
 
 if __name__ == '__main__':
     unittest.main()
