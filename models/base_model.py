@@ -7,6 +7,7 @@ methods for other classes
 from uuid import uuid4
 from datetime import datetime
 from models import storage
+import uuid
 import json
 import sys
 import os.path
@@ -14,24 +15,19 @@ import os.path
 
 class BaseModel():
     ''' a base class for other classes '''
-    dtf = '%Y-%m-%dT%H:%M:%S.%f'
 
     def __init__(self, *args, **kwargs):
         '''
         initializes the values
         '''
-        if kwargs != {}:
-            for key, val in kwargs.items():
-                if "created_at" == key:
-                    self.created_at = datetime.strptime(kwargs["created_at"],
-                                                        self.dtf)
-                elif "updated_at" == key:
-                    self.updated_at = datetime.strptime(kwargs["updated_at"],
-                                                        self.dtf)
-                elif "__class__" == key:
-                    pass
-                else:
-                    setattr(self, key, val)
+        if kwargs:
+            dtf = '%Y-%m-%dT%H:%M:%S.%f'
+            k_dict = kwargs.copy()
+            del k_dict["__class__"]
+            for key in k_dict:
+                if ("created_at" == key or "updated_at" == key):
+                    k_dict[key] = datetime.strptime(k_dict[key], dtf)
+            self.__dict__ = k_dict
         else:
             self.id = str(uuid4())
             self.created_at = datetime.now()
@@ -60,10 +56,10 @@ class BaseModel():
         returns a dictionary containing all keysvalues
         of __dict__ of the instance
         '''
-        my_dict = dict(self.__dict__)
-        my_dict["__class__"] = type(self).__name__
-        my_dict["updated_at"] = my_dict["updated_at"].isoformat()
-        my_dict["created_at"] = my_dict["created_at"].isoformat()
+        my_dict = self.__dict__.copy()
+        my_dict["__class__"] = self.__class__.__name__
+        my_dict["updated_at"] = self.updated_at.isoformat()
+        my_dict["created_at"] = self.created_at.isoformat()
         return my_dict
 
     def to_json(self):
