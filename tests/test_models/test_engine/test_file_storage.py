@@ -26,6 +26,38 @@ class TestFileStorage(unittest.TestCase):
         self.assertTrue(wr)
         ex = os.access('models/engine/file_storage.py', os.X_OK)
         self.assertTrue(ex)
+        
+    def test_new(self):
+        """
+        Tests method: new (saves new object into dictionary)
+        """
+        m_storage = FileStorage()
+        instances_dic = m_storage.all()
+        Aman = User()
+        Aman.id = 999999
+        Aman.name = "Aman"
+        m_storage.new(Aman)
+        key = Aman.__class__.__name__ + "." + str(Aman.id)
+        #print(instances_dic[key])
+        self.assertIsNotNone(instances_dic[key])
+        
+     
+     
+    def test_reload(self):
+        """
+        Tests method: reload (reloads objects from string file)
+        """
+        a_storage = FileStorage()
+        try:
+            os.remove("file.json")
+        except:
+            pass
+        with open("file.json", "w") as f:
+            f.write("{}")
+        with open("file.json", "r") as r:
+            for line in r:
+                self.assertEqual(line, "{}")
+        self.assertIs(a_storage.reload(), None)
 
     def test_funcdocs(self):
         ''' testing functions docstring '''
