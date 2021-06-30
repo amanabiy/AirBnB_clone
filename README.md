@@ -56,3 +56,4 @@ EOF  help  quit
 (hbnb) quit
 $
 ```
+Non-Interactive Mode
