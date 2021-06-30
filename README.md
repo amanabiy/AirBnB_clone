@@ -4,7 +4,7 @@
 ............................................................
 ............................................................
 
-## First step: Write a command interpreter to manage your AirBnB objects.
+### First step: Write a command interpreter to manage your AirBnB objects.
 
 This is the first step towards building first full web application: the AirBnB clone.
 
@@ -15,7 +15,7 @@ This is the first step towards building first full web application: the AirBnB c
 * create the first abstracted storage engine of the project: File storage.
 * create all unittests to validate all our classes and storage engine
 
-## What’s a command interpreter?
+### What’s a command interpreter?
 Do you remember the Shell? It’s exactly the same but limited to a specific use-case. In our case, we want to be able to manage the objects of our project:
 
 * Create a new object (ex: a new User or a new Place)
