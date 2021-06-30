@@ -30,7 +30,7 @@ Do you remember the Shell? It’s exactly the same but limited to a specific use
 | --------- | --------------------------------------------- | ------------------------------------------ |
 | `help`    | `help`                                        | displays all commands available            |
 | `create`  | `create <class>`                              | creates new object (ex. a new User, Place) |
-| `update`  | `User.update('123', {'name' : 'Greg_n_Mel'})` | updates attribute of an object             |
+| `update`  | `User.update('123', {'name' : 'user_name'})`  | updates attribute of an object             |
 | `destroy` | `User.destroy('123')`                         | destroys specified object                  |
 | `show`    | `User.show('123')`                            | retrieve an object from a file, a database |
 | `all`     | `User.all()`                                  | display all objects in class               |
@@ -38,8 +38,8 @@ Do you remember the Shell? It’s exactly the same but limited to a specific use
 
 #### How to install
 
-git clone https://github.com/amanabiy/AirBnB_clone
-cd AirBnB_clone
+- git clone https://github.com/amanabiy/AirBnB_clone
+- cd AirBnB_clone
 
 #### Usage
 Interactive Mode
