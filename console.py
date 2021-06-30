@@ -47,18 +47,16 @@ class HBNBCommand(cmd.Cmd):
         ''' an empty line + ENTER shouldn’t execute anything '''
         pass
 
-    def do_create(self, args):
-        ''' Creates a new instance BaseModel, saves prints its id '''
-        if args == "":
+    def do_create(self, line):
+        """Create instance specified by user"""
+        if len(line) == 0:
             print("** class name missing **")
-            return
-        arg = shlex.split(args)
-        if arg[0] not in HBNBCommand.All_class_dict:
+        elif line not in HBNBCommand.classes:
             print("** class doesn't exist **")
-            return
-        new = HBNBCommand.All_class_dict[arg[0]]()
-        new.save()
-        print(new.id)
+        else:
+            instance = eval(line)()
+            instance.save()
+            print(instance.id)
 
     def do_show(self, args):
         ''' Prints the string repr of an instances class name and id '''
@@ -213,46 +211,51 @@ class HBNBCommand(cmd.Cmd):
                 cnt += 1
         print(cnt)
 
-    def default(self, args):
-        ''' method defines actions on objects {<>}.all(), {<>}.count()
-        {<>}.show(), {<>}.destroy(), {<>}.update()'''
-
-        cmd_dict = {
-            "all": self.do_all,
-            "count": self.do_count,
-            "show": self.do_show,
-            "destroy": self.do_destroy,
-            "update": self.do_update,
-        }
-
-        arg = args.strip()
-        val = arg.split(".")
-        if len(val) != 2:
-            cmd.Cmd.default(self, arg)
-            return
-        class_name = val[0]
-        command = val[1].split("(")[0]
-        line = ""
-        if (command == "update" and val[1].split("(")[1][-2] == "}"):
-            inputs = val[1].split("(")[1].split(",", 1)
-            inputs[0] = shlex.split(inputs[0])[0]
-            line = "".join(inputs)[0:-1]
-            line = class_name + " " + line
-            self.do_update2(line.strip())
+    def default(self, line):
+        """Accepts class name followed by arguement"""
+        args = line.split('.')
+        class_arg = args[0]
+        if len(args) == 1:
+            print("*** Unknown syntax: {}".format(line))
             return
         try:
-            inputs = val[1].split("(")[1].split(",")
-            for num in range(len(inputs)):
-                if (num != len(inputs) - 1):
-                    line = line + " " + shlex.split(inputs[num])[0]
-                else:
-                    line = line + " " + shlex.split(inputs[num][0:-1])[0]
+            args = args[1].split('(')
+            command = args[0]
+            if command == 'all':
+                HBNBCommand.do_all(self, class_arg)
+            elif command == 'count':
+                HBNBCommand.do_count(self, class_arg)
+            elif command == 'show':
+                args = args[1].split(')')
+                id_arg = args[0]
+                id_arg = id_arg.strip("'")
+                id_arg = id_arg.strip('"')
+                arg = class_arg + ' ' + id_arg
+                HBNBCommand.do_show(self, arg)
+            elif command == 'destroy':
+                args = args[1].split(')')
+                id_arg = args[0]
+                id_arg = id_arg.strip('"')
+                id_arg = id_arg.strip("'")
+                arg = class_arg + ' ' + id_arg
+                HBNBCommand.do_destroy(self, arg)
+            elif command == 'update':
+                args = args[1].split(',')
+                id_arg = args[0].strip("'")
+                id_arg = id_arg.strip('"')
+                name_arg = args[1].strip(',')
+                val_arg = args[2]
+                name_arg = name_arg.strip(' ')
+                name_arg = name_arg.strip("'")
+                name_arg = name_arg.strip('"')
+                val_arg = val_arg.strip(' ')
+                val_arg = val_arg.strip(')')
+                arg = class_arg + ' ' + id_arg + ' ' + name_arg + ' ' + val_arg
+                HBNBCommand.do_update(self, arg)
+            else:
+                print("*** Unknown syntax: {}".format(line))
         except IndexError:
-            inputs = ""
-            line = ""
-        line = class_name + line
-        if (command in cmd_dict.keys()):
-            cmd_dict[command](line.strip())
+            print("*** Unknown syntax: {}".format(line))
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
