@@ -39,3 +39,5 @@ Do you remember the Shell? It’s exactly the same but limited to a specific use
 #### How to install
 
 git clone https://github.com/amanabiy/AirBnB_clone
+cd AirBnB_clone
+
