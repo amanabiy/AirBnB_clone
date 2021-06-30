@@ -38,7 +38,7 @@ class BaseModel():
         '''
         print in "[<class name>] (<self.id>) <self.__dict__>" format
         '''
-        return ("[{}] (<{}>) <{}>".format(
+        return ('[{}] ({}) {}'.format(
             self.__class__.__name__,
             self.id,
             self.__class__.__dict__))
@@ -56,11 +56,14 @@ class BaseModel():
         returns a dictionary containing all keysvalues
         of __dict__ of the instance
         '''
-        my_dict = self.__dict__.copy()
-        my_dict["__class__"] = self.__class__.__name__
-        my_dict["updated_at"] = self.updated_at.isoformat()
-        my_dict["created_at"] = self.created_at.isoformat()
-        return my_dict
+        dic = {}
+        dic["__class__"] = self.__class__.__name__
+        for k, v in self.__dict__.items():
+            if isinstance(v, (datetime, )):
+                dic[k] = v.isoformat()
+            else:
+                dic[k] = v
+        return dic
 
     def to_json(self):
         '''
