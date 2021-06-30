@@ -3,6 +3,8 @@
 Unittest Module for FileStorage
 """
 import unittest
+from models import storage
+from models.base_model import BaseModel
 from models.engine import file_storage
 from models.engine.file_storage import FileStorage
 import os
@@ -29,6 +31,22 @@ class TestFileStorage(unittest.TestCase):
         ''' testing functions docstring '''
         for func in dir(FileStorage):
             self.assertTrue(len(func.__doc__) > 0)
+
+    def test_save(self):
+        ''' tests save method'''
+        obj = FileStorage()
+        new_obj = BaseModel()
+        obj.new(new_obj)
+        dict1 = obj.all()
+        obj.save()
+        obj.reload()
+        dict2 = obj.all()
+        for key in dict1:
+            key1 = key
+        for key in dict2:
+            key2 = key
+        self.assertEqual(dict1[key1].to_dict(), dict2[key2].to_dict())
+
 
 if __name__ == '__main__':
     unittest.main()
