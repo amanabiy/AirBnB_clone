@@ -79,5 +79,5 @@ EOF  help  quit
 $
 ```
 ### Authors
-Amanuel Sisay <amanuelabiy.as@gmail.com>
-Biniyam Melaku <biniyammelaku2@gmail.com>
+- Amanuel Sisay <amanuelabiy.as@gmail.com>
+- Biniyam Melaku <biniyammelaku2@gmail.com>
