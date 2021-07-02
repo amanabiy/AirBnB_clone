@@ -6,7 +6,7 @@ Module class: Place
 
 
 class Place(BaseModel):
-    """definition for class Place"""
+    '''definition for class Place'''
     name = ""
     city_id = ""
     user_id = ""
@@ -18,7 +18,3 @@ class Place(BaseModel):
     latitude = 0.0
     longtude = 0.0
     amenity_ids = []
-
-    def __init__(self, *args, **kwargs):
-        """ constructor method """
-        super().__init__(self, *args, **kwargs)
