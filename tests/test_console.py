@@ -38,32 +38,25 @@ class TestConsole(unittest.TestCase):
         """Check for docstring existance"""
     def test_docstrings_in_console(self):
         """Test docstrings exist in console.py"""
-        self.assertTrue(len(console.__doc__) >= 1)
+        self.assertTrue(len(HBNBCommand.__doc__) >= 1)
 
     """Test command interpreter outputs"""
     def test_emptyline(self):
         """Test no user input"""
         with patch('sys.stdout', new=StringIO()) as fake_output:
-            self.typing.onecmd("\n")
+            HBNBCommand().onecmd("\n")
             self.assertEqual(fake_output.getvalue(), '')
 
     def test_create(self):
         """Test cmd output: create"""
         with patch('sys.stdout', new=StringIO()) as fake_output:
-            self.typing.onecmd("create")
+            HBNBCommand().onecmd("create")
             self.assertEqual("** class name missing **\n",
                              fake_output.getvalue())
         with patch('sys.stdout', new=StringIO()) as fake_output:
-            self.typing.onecmd("create SomeClass")
+            HBNBCommand().onecmd("create SomeClass")
             self.assertEqual("** class doesn't exist **\n",
                              fake_output.getvalue())
-        with patch('sys.stdout', new=StringIO()) as fake_output:
-            self.typing.onecmd("create User")  # not used
-            self.typing.onecmd("create User")  # just need to create instances
-        with patch('sys.stdout', new=StringIO()) as fake_output:
-            self.typing.onecmd("User.all()")
-            self.assertEqual("[[User]",
-                             fake_output.getvalue()[:7])
 
     def test_show_id(self):
         ''' test show id '''
