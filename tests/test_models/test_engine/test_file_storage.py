@@ -4,6 +4,7 @@ Unittest Module for FileStorage
 """
 import unittest
 from models import storage
+from models.user import User
 from models.base_model import BaseModel
 from models.engine import file_storage
 from models.engine.file_storage import FileStorage
@@ -25,8 +26,8 @@ class TestFileStorage(unittest.TestCase):
         wr = os.access('models/engine/file_storage.py', os.W_OK)
         self.assertTrue(wr)
         ex = os.access('models/engine/file_storage.py', os.X_OK)
-        self.assertTrue(ex)
-        
+        self.assertFalse(ex)
+
     def test_new(self):
         """
         Tests method: new (saves new object into dictionary)
@@ -38,11 +39,8 @@ class TestFileStorage(unittest.TestCase):
         Aman.name = "Aman"
         m_storage.new(Aman)
         key = Aman.__class__.__name__ + "." + str(Aman.id)
-        #print(instances_dic[key])
         self.assertIsNotNone(instances_dic[key])
-        
-     
-     
+
     def test_reload(self):
         """
         Tests method: reload (reloads objects from string file)
