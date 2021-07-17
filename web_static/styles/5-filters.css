@@ -4,6 +4,8 @@
     width: 100%;
     border: 1px solid #DDDDDD;
     border-radius: 4px;
+    display: flex;
+    justify-content: flex-start;
 }
 .filters button{
     font-size: 18px;
@@ -12,15 +14,14 @@
     height: 48px;
     width: 20%;
     border: 0;
-    float: right;
     border-radius: 4px;
     margin: 11px 30px;
+    margin-left: auto;
 }
 .locations, .amenities{
     height: 100%;
     width: 25%;
     padding-left: 50px;
-    float: left;
 }
 .locations{
     border-right: 1px solid #DDDDDD;
